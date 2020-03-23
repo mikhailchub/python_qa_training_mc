@@ -1,2 +1,2 @@
-# python_qa_training_mc
+# Repository for Python QA training
 Python for QA training

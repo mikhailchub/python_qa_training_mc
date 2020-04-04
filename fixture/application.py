@@ -15,7 +15,7 @@ class Application:
 
     def return_to_homepage(self):
         wd = self.wd
-        wd.find_element_by_link_text("home page").click()
+        wd.find_element_by_link_text("home").click()
 
     def open_home_page(self):
         wd = self.wd

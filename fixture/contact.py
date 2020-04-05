@@ -48,3 +48,8 @@ class ContactHelper:
         self.app.set_input_text("address", contact.address)
         self.app.set_input_text("mobile", contact.mobile)
         self.app.set_input_text("email", contact.email)
+
+    def count(self):
+        wd = self.app.wd
+        self.app.goto_homepage()
+        return len(wd.find_elements_by_name("selected[]"))

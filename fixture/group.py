@@ -48,9 +48,12 @@ class GroupHelper:
         self.goto_groups_page()
 
     def fill_group_fields(self, group):
-        wd = self.app.wd
         # Fill group form
         self.app.set_input_text("group_name", group.name)
         self.app.set_input_text("group_header", group.header)
         self.app.set_input_text("group_footer", group.footer)
 
+    def count(self):
+        wd = self.app.wd
+        self.goto_groups_page()
+        return len(wd.find_elements_by_name("selected[]"))

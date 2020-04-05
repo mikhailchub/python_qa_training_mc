@@ -23,18 +23,21 @@ class GroupHelper:
     def delete_first_group(self):
         wd = self.app.wd
         self.goto_groups_page()
-        # Select first group
-        wd.find_element_by_name("selected[]").click()
+        self.select_first_group()
         # Submit deletion
         wd.find_element_by_name("delete").click()
         # Return to Groups page
         self.goto_groups_page()
 
+    def select_first_group(self):
+        wd = self.app.wd
+        # Select first group
+        wd.find_element_by_name("selected[]").click()
+
     def update_first_group(self, group):
         wd = self.app.wd
         self.goto_groups_page()
-        # Select first group
-        wd.find_element_by_name("selected[]").click()
+        self.select_first_group()
         # Open group for editing
         wd.find_element_by_name("edit").click()
         # Fill group form
@@ -47,9 +50,7 @@ class GroupHelper:
     def fill_group_fields(self, group):
         wd = self.app.wd
         # Fill group form
-        wd.find_element_by_name("group_name").clear()
-        wd.find_element_by_name("group_name").send_keys(group.name)
-        wd.find_element_by_name("group_header").clear()
-        wd.find_element_by_name("group_header").send_keys(group.header)
-        wd.find_element_by_name("group_footer").clear()
-        wd.find_element_by_name("group_footer").send_keys(group.footer)
+        self.app.set_input_text("group_name", group.name)
+        self.app.set_input_text("group_header", group.header)
+        self.app.set_input_text("group_footer", group.footer)
+

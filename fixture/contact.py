@@ -39,13 +39,8 @@ class ContactHelper:
     def fill_contact_fields(self, contact):
         wd = self.app.wd
         # Fill Contact form
-        wd.find_element_by_name("firstname").clear()
-        wd.find_element_by_name("firstname").send_keys(contact.firstname)
-        wd.find_element_by_name("lastname").clear()
-        wd.find_element_by_name("lastname").send_keys(contact.lastname)
-        wd.find_element_by_name("address").clear()
-        wd.find_element_by_name("address").send_keys(contact.address)
-        wd.find_element_by_name("mobile").clear()
-        wd.find_element_by_name("mobile").send_keys(contact.mobile)
-        wd.find_element_by_name("email").clear()
-        wd.find_element_by_name("email").send_keys(contact.email)
+        self.app.set_input_text("firstname", contact.firstname)
+        self.app.set_input_text("lastname", contact.lastname)
+        self.app.set_input_text("address", contact.address)
+        self.app.set_input_text("mobile", contact.mobile)
+        self.app.set_input_text("email", contact.email)

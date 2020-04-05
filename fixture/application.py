@@ -13,7 +13,7 @@ class Application:
         self.group = GroupHelper(self)
         self.contact = ContactHelper(self)
 
-    def return_to_homepage(self):
+    def goto_homepage(self):
         wd = self.wd
         wd.find_element_by_link_text("home").click()
 

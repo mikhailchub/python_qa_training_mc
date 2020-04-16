@@ -27,6 +27,8 @@ class ContactHelper:
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         # Confirm contact deletion
         wd.switch_to_alert().accept()
+        # Delete confirmation page is shown - added as an additional wait
+        wd.find_elements_by_css_selector("#content .msgbox")
         # Return to Home page
         self.app.goto_homepage()
 

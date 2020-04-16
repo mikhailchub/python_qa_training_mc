@@ -8,11 +8,8 @@ class SessionHelper:
 
     def login(self, username, password):
         wd = self.app.wd
-        wd.find_element_by_name("user").click()
-        wd.find_element_by_name("user").clear()
-        wd.find_element_by_name("user").send_keys(username)
-        wd.find_element_by_name("pass").clear()
-        wd.find_element_by_name("pass").send_keys(password)
+        self.app.set_input_text("user", username)
+        self.app.set_input_text("pass", password)
         wd.find_element_by_xpath("//input[@value='Login']").click()
 
     def logout(self):

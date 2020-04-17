@@ -20,11 +20,14 @@ class ContactHelper:
         self.contact_cache = None
 
     def delete_first_contact(self):
+        self.delete_contact_by_index(0)
+
+    def delete_contact_by_index(self, index):
         wd = self.app.wd
         # Go to Home page
         self.app.goto_homepage()
-        # Select first contact
-        wd.find_element_by_name("selected[]").click()
+        # Select contact by index
+        self.select_contact_by_index(index)
         # Submit deletion
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         # Confirm contact deletion
@@ -36,12 +39,19 @@ class ContactHelper:
         # Reset contact cache
         self.contact_cache = None
 
+    def select_contact_by_index(self, index):
+        wd = self.app.wd
+        wd.find_elements_by_name("selected[]")[index].click()
+
     def update_first_contact(self, contact):
+        self.update_contact_by_index(0, contact)
+
+    def update_contact_by_index(self, index, contact):
         wd = self.app.wd
         # Go to Home page
         self.app.goto_homepage()
-        # Open first contact for editing
-        wd.find_element_by_xpath("//img[@title='Edit']").click()
+        # Open contact for editing by index
+        self.open_contact_for_editing_by_index(index)
         # Fill Contact form
         self.fill_contact_fields(contact)
         # Submit contact update
@@ -50,6 +60,10 @@ class ContactHelper:
         self.app.goto_homepage()
         # Reset contact cache
         self.contact_cache = None
+
+    def open_contact_for_editing_by_index(self, index):
+        wd = self.app.wd
+        wd.find_elements_by_xpath("//img[@title='Edit']")[index].click()
 
     def fill_contact_fields(self, contact):
         wd = self.app.wd

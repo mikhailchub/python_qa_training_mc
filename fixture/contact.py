@@ -1,5 +1,5 @@
 from model.contact import Contact
-
+import re
 
 class ContactHelper:
 
@@ -63,7 +63,13 @@ class ContactHelper:
 
     def open_contact_for_editing_by_index(self, index):
         wd = self.app.wd
+        self.app.goto_homepage()
         wd.find_elements_by_xpath("//img[@title='Edit']")[index].click()
+
+    def open_contact_details_by_index(self, index):
+        wd = self.app.wd
+        self.app.goto_homepage()
+        wd.find_elements_by_xpath("//img[@title='Details']")[index].click()
 
     def fill_contact_fields(self, contact):
         wd = self.app.wd
@@ -86,10 +92,48 @@ class ContactHelper:
             wd = self.app.wd
             self.app.goto_homepage()
             self.contact_cache = []
-            element_list = wd.find_elements_by_css_selector("tr[name='entry']")
-            for element in element_list:
-                contact_id = element.find_element_by_name("selected[]").get_attribute("value")
-                contact_last_name = element.find_element_by_css_selector("td:nth-of-type(2)").text
-                contact_first_name = element.find_element_by_css_selector("td:nth-of-type(3)").text
-                self.contact_cache.append(Contact(firstname=contact_first_name, lastname=contact_last_name, id=contact_id))
+            rows = wd.find_elements_by_name("entry")
+            for row in rows:
+                cells = row.find_elements_by_tag_name("td")
+                id = cells[0].find_element_by_tag_name("input").get_attribute("value")
+                lastname = cells[1].text
+                firstname = cells[2].text
+                address = cells[3].text
+                all_emails = cells[4].text
+                all_phones = cells[5].text
+                self.contact_cache.append(
+                    Contact(firstname=firstname, lastname=lastname, id=id, address=address,
+                            all_emails_from_homepage=all_emails, all_phones_from_homepage=all_phones))
         return list(self.contact_cache)
+
+    def get_contact_info_from_edit_page(self, index):
+        wd = self.app.wd
+        self.open_contact_for_editing_by_index(index)
+        firstname = wd.find_element_by_name("firstname").get_attribute("value")
+        lastname = wd.find_element_by_name("lastname").get_attribute("value")
+        id = wd.find_element_by_name("id").get_attribute("value")
+        address = wd.find_element_by_name("address").get_attribute("value")
+        email = wd.find_element_by_name("email").get_attribute("value")
+        email2 = wd.find_element_by_name("email2").get_attribute("value")
+        email3 = wd.find_element_by_name("email3").get_attribute("value")
+        homephone = wd.find_element_by_name("home").get_attribute("value")
+        mobilephone = wd.find_element_by_name("mobile").get_attribute("value")
+        workphone = wd.find_element_by_name("work").get_attribute("value")
+        secondaryphone = wd.find_element_by_name("phone2").get_attribute("value")
+        contact = Contact(firstname=firstname, lastname=lastname, id=id, address=address,
+                          email=email, email2=email2, email3=email3,
+                          homephone=homephone, mobilephone=mobilephone,
+                          workphone=workphone, secondaryphone=secondaryphone)
+        return contact
+
+    def get_contact_info_from_details_page(self, index):
+        wd = self.app.wd
+        self.open_contact_details_by_index(index)
+        contact_details = wd.find_element_by_id("content").text
+        homephone = re.search("H: (.*)", contact_details).group(1)
+        mobilephone = re.search("M: (.*)", contact_details).group(1)
+        workphone = re.search("W: (.*)", contact_details).group(1)
+        secondaryphone = re.search("P: (.*)", contact_details).group(1)
+        contact = Contact(homephone=homephone, mobilephone=mobilephone,
+                          workphone=workphone, secondaryphone=secondaryphone)
+        return contact

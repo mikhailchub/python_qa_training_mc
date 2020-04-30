@@ -87,7 +87,7 @@ class GroupHelper:
             self.goto_groups_page()
             self.group_cache = []
             for element in wd.find_elements_by_css_selector("span.group"):
-                group_name = element.text
+                group_name = element.get_attribute("textContent")   # changed .text to get_attribute('textContent') to avoid tests failing in case of trailing spaces
                 group_id = element.find_element_by_name("selected[]").get_attribute("value")
                 self.group_cache.append(Group(name=group_name, id=group_id))
         return list(self.group_cache)

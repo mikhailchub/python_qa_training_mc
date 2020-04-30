@@ -77,8 +77,13 @@ class ContactHelper:
         self.app.set_input_text("firstname", contact.firstname)
         self.app.set_input_text("lastname", contact.lastname)
         self.app.set_input_text("address", contact.address)
-        self.app.set_input_text("mobile", contact.mobile)
+        self.app.set_input_text("home", contact.homephone)
+        self.app.set_input_text("mobile", contact.mobilephone)
+        self.app.set_input_text("work", contact.workphone)
+        self.app.set_input_text("phone2", contact.secondaryphone)
         self.app.set_input_text("email", contact.email)
+        self.app.set_input_text("email2", contact.email2)
+        self.app.set_input_text("email3", contact.email3)
 
     def count(self):
         wd = self.app.wd
